@@ -1,0 +1,30 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/adaptive_timer"]
+
+
+[project]
+name = "adaptive-timer"
+version = "0.3.3"
+dependencies = [
+    "pycopy-cpython-utime >= 0.5.2"
+]
+requires-python = ">=3.9"
+authors = [
+    {name="Brian Vetter", email="bvetter@gmail.com"},
+]
+
+description = "Executes a workload at a designated interval while minimizing time variance"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: Implementation :: MicroPython",
+    "Operating System :: OS Independent",
+    "Development Status :: 3 - Alpha",
+]
