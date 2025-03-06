@@ -8,7 +8,7 @@ packages = ["src/adaptive_timer"]
 
 [project]
 name = "adaptive-timer"
-version = "0.3.3"
+version = "0.3.4"
 dependencies = [
     "pycopy-cpython-utime >= 0.5.2"
 ]
@@ -28,3 +28,7 @@ classifiers = [
     "Operating System :: OS Independent",
     "Development Status :: 3 - Alpha",
 ]
+
+[project.urls]
+Repository = "https://github.com/bvett/adaptive-timer.git"
+Issues = "https://github.com/bvett/adaptive-timer/issues"
