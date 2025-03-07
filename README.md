@@ -4,9 +4,8 @@
 ### Contents
 - [Introduction](#introduction)
 - [Hello, World!](#hello-world)
-  - [Example 1: Fixed Interval](#example-1-fixed-interval)
-  - [Example 2: Adaptive Interval](#example-2-adaptive-interval)
-- [Usage Examples](#usage-examples)
+- [Feature Demos](#feature-demos)
+  - [asyncio.sleep() vs AdaptiveTimer](#asynciosleep-vs-adaptivetimer)
   - [Producer / Consumer](#producer--consumer)
   - [Start / Stop](#start--stop)
   - [Changing the Target Interval](#changing-the-target-interval)
@@ -55,12 +54,136 @@ The *start(get_value)* and *stop()* instance methods of AdaptiveTimer control a 
 5. Calculates an **offset** to compensate for any variance from the target interval.
 6. Sleeps for **target interval + offset** seconds. (Offset is a negative number)
 
-While the loop is sleeping, and tasks awaiting on the *value()** instance method will wake up and process the value obtained during the most recent interval of the loop.
+While the loop is sleeping, and tasks awaiting on the *value()* instance method will wake up and process the value obtained during the most recent interval of the loop.
 
 ## Hello, World!
+This example uses AdaptiveTimer to print a message every second, while compensating for a 0.75 second workload that is toggled on/off every 5s.
+
+The shell commands below assume use of Linux/MacOS.  
+
+1. Ensure you are using python 3.9 or later
+```shell
+$ python --version
+Python 3.13.1
+```
+
+2. In an empty directory, create a virtual environment and activate it
+``` shell
+$ python -m venv .venv
+$ source .venv/bin/activate
+(.venv) $ 
+```
+
+3. Install the latest version of adaptive-timer using pip
+
+```shell
+(.venv) $ pip install adaptive-timer
+Collecting adaptive-timer
+  Downloading adaptive_timer-0.3.5-py3-none-any.whl.metadata (23 kB)
+Collecting pycopy-cpython-utime>=0.5.2 (from adaptive-timer)
+  Using cached pycopy_cpython_utime-0.5.2-py3-none-any.whl
+Downloading adaptive_timer-0.3.5-py3-none-any.whl (11 kB)
+Installing collected packages: pycopy-cpython-utime, adaptive-timer
+Successfully installed adaptive-timer-0.3.5 pycopy-cpython-utime-0.5.2
+```
+
+4. Create [hello_world.py](src/examples/hello_world.py) with the following:
+```python
+# Print 'Hello, World!' every 1s while toggling on/off an extra 0.75s load every 5s
+
+import asyncio
+import time
+from adaptive_timer import AdaptiveTimer
+
+
+async def loop():
+
+    def workload():
+        nonlocal t, i
+
+        suffix = ""
+
+        if int(i / 5) % 2 == 1:
+            suffix = " (with 0.75s load)"
+            time.sleep(0.75)
+
+        now = time.time()
+        print(f"Hello, World! Time since last message: {now-t:.3f}{suffix}")
+        t = now
+
+        i += 1
+
+    t = time.time()
+    i = 0
+
+    await AdaptiveTimer(1).start(workload)
+
+
+asyncio.run(loop())
+
+```
+
+5. Run hello_world.py for about 20-30 seconds, then press ctrl-c to exit:
+
+```shell
+(.venv) $ python hello_world.py 
+Hello, World! Time since last message: 0.000
+Hello, World! Time since last message: 1.001
+Hello, World! Time since last message: 1.000
+Hello, World! Time since last message: 1.000
+Hello, World! Time since last message: 1.001
+Hello, World! Time since last message: 1.755 (with 0.75s load)
+Hello, World! Time since last message: 0.998 (with 0.75s load)
+Hello, World! Time since last message: 1.001 (with 0.75s load)
+Hello, World! Time since last message: 1.001 (with 0.75s load)
+Hello, World! Time since last message: 1.000 (with 0.75s load)
+Hello, World! Time since last message: 0.245
+Hello, World! Time since last message: 1.000
+Hello, World! Time since last message: 1.000
+Hello, World! Time since last message: 1.000
+Hello, World! Time since last message: 1.000
+Hello, World! Time since last message: 1.753 (with 0.75s load)
+Hello, World! Time since last message: 1.001 (with 0.75s load)
+Hello, World! Time since last message: 1.001 (with 0.75s load)
+Hello, World! Time since last message: 0.997 (with 0.75s load)
+Hello, World! Time since last message: 1.003 (with 0.75s load)
+Hello, World! Time since last message: 0.245
+Hello, World! Time since last message: 1.000
+Hello, World! Time since last message: 1.000
+Hello, World! Time since last message: 1.000
+Hello, World! Time since last message: 1.000
+Hello, World! Time since last message: 1.755 (with 0.75s load)
+Hello, World! Time since last message: 1.000 (with 0.75s load)
+Hello, World! Time since last message: 1.000 (with 0.75s load)
+Hello, World! Time since last message: 1.000 (with 0.75s load)
+Hello, World! Time since last message: 1.000 (with 0.75s load)
+Hello, World! Time since last message: 0.245
+Hello, World! Time since last message: 1.000
+Hello, World! Time since last message: 1.000
+Hello, World! Time since last message: 1.000
+Hello, World! Time since last message: 1.000
+Hello, World! Time since last message: 1.755 (with 0.75s load)
+Hello, World! Time since last message: 1.000 (with 0.75s load)
+Hello, World! Time since last message: 1.000 (with 0.75s load)
+Hello, World! Time since last message: 1.000 (with 0.75s load)
+Hello, World! Time since last message: 0.997 (with 0.75s load)
+Hello, World! Time since last message: 0.248
+Hello, World! Time since last message: 1.000
+^CTraceback (most recent call last):
+
+```
+Ignore the stack trace - there is no exception handling in this example.
+
+### What This Demonstrates
+AdaptiveTimer automatically attempts to compensate when the actual interval deviates from the target (1s, in this example.)   When the workload appears, the interval temporarily increases proportionately, but then returns to the target interval as AdaptiveTimer compensates in its internal cycle.  The opposite happens when the workload is removed.
+
+
+## Feature Demos
+
+### asyncio.sleep() vs AdaptiveTimer
 This section provides a side-by-side comparison of a simple application that attempts to print a message at exactly 1-second intervals.  In the first example, the interval is achieved by calling *asyncio.sleep()*, while the second interval is modified to use AdaptiveTimer.
 
-### Example 1: Fixed Interval
+#### Example 1: Fixed Interval
 [example_1.py](src/examples/example_1.py) measures the actual time spent in a cycle of *do_something_every_second()* given a 0.1s time cost for *do_something()* and a competing coroutine, *noisy_neighbor()*:
  
 ```python
@@ -125,7 +248,7 @@ variance(actual_interval): 0.0692 (relative to 1s target)
 
 The statistics show the mean interval and statistical variance relative to the target of 1s.  These are used for comparison next.
 
-### Example 2: Adaptive Interval
+#### Example 2: Adaptive Interval
 
 [example_2.py](src/examples/example_2.py) adapts example_1.py to use AdaptiveTimer to achieve the desired interval of 1s:
 
@@ -157,8 +280,6 @@ variance(actual_interval): 0.0868 (relative to 1s target)
 
 The result above shows how using AdaptiveTimer results in intervals that are closer to the 1s target.
 
-## Usage Examples
-The following examples progressively demonstrate the features of AdaptiveTimer.
 
 ### Producer / Consumer
 [usage_1.py](src/examples/usage_1.py) demonstrates how AdaptiveTimer can be used in a basic producer/consumer application.  
