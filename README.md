@@ -87,7 +87,7 @@ Installing collected packages: pycopy-cpython-utime, adaptive-timer
 Successfully installed adaptive-timer-0.3.5 pycopy-cpython-utime-0.5.2
 ```
 
-4. Create [hello_world.py](src/examples/hello_world.py) with the following:
+4. Create [hello_world.py](https://github.com/bvett/adaptive-timer/blob/main/src/examples/hello_world.py) with the following:
 ```python
 # Print 'Hello, World!' every 1s while toggling on/off an extra 0.75s load every 5s
 
@@ -184,7 +184,7 @@ AdaptiveTimer automatically attempts to compensate when the actual interval devi
 This section provides a side-by-side comparison of a simple application that attempts to print a message at exactly 1-second intervals.  In the first example, the interval is achieved by calling *asyncio.sleep()*, while the second interval is modified to use AdaptiveTimer.
 
 #### Example 1: Fixed Interval
-[example_1.py](src/examples/example_1.py) measures the actual time spent in a cycle of *do_something_every_second()* given a 0.1s time cost for *do_something()* and a competing coroutine, *noisy_neighbor()*:
+[example_1.py](https://github.com/bvett/adaptive-timer/blob/main/src/examples/example_1.py) measures the actual time spent in a cycle of *do_something_every_second()* given a 0.1s time cost for *do_something()* and a competing coroutine, *noisy_neighbor()*:
  
 ```python
 def do_something():
@@ -224,7 +224,7 @@ async def noisy_neighbor():
 
 To help ensure a realistic comparison, *do_something_every_second()* sleeps for 0.9s rather than the target interval of 1.0s.  A developer would likely make this adjustment knowing that do_something() imparts a 0.1s time cost.
 
-From the project directory, execute [src/examples/example_1.py](src/examples/example_1.py) for a few iterations then press **ctrl-c** to terminate:
+From the project directory, execute [src/examples/example_1.py](https://github.com/bvett/adaptive-timer/blob/main/src/examples/example_1.py) for a few iterations then press **ctrl-c** to terminate:
 
 ```shell
 [adaptive-timer]$ python src/examples/example_1.py 
@@ -250,7 +250,7 @@ The statistics show the mean interval and statistical variance relative to the t
 
 #### Example 2: Adaptive Interval
 
-[example_2.py](src/examples/example_2.py) adapts example_1.py to use AdaptiveTimer to achieve the desired interval of 1s:
+[example_2.py](https://github.com/bvett/adaptive-timer/blob/main/src/examples/example_2.py) adapts example_1.py to use AdaptiveTimer to achieve the desired interval of 1s:
 
 ```python
 async def do_something_every_second():
@@ -258,7 +258,7 @@ async def do_something_every_second():
     await AdaptiveTimer(1).start(do_something)
 ```
 
-Execute [src/examples/example_2.py](src/examples/example_2.py) for a few iterations then press ctrl-c to terminate. 
+Execute [src/examples/example_2.py](https://github.com/bvett/adaptive-timer/blob/main/src/examples/example_2.py) for a few iterations then press ctrl-c to terminate. 
 
 ```shell
 [adaptive-timer]$ python src/examples/example_2.py 
@@ -282,7 +282,7 @@ The result above shows how using AdaptiveTimer results in intervals that are clo
 
 
 ### Producer / Consumer
-[usage_1.py](src/examples/usage_1.py) demonstrates how AdaptiveTimer can be used in a basic producer/consumer application.  
+[usage_1.py](https://github.com/bvett/adaptive-timer/blob/main/src/examples/usage_1.py) demonstrates how AdaptiveTimer can be used in a basic producer/consumer application.  
 
 This is useful when downstream processing (such as storage, display, or transmitting) needs to occur whenever a value is captured.   
 
@@ -307,7 +307,7 @@ AdaptiveTimer (*timer*, in these examples) executes *produce_values()* once ever
 
 For IoT devices using MicroPython, this is a useful pattern to follow for processing sensor input, replacing *random.randint()* with hardware-specific instructions.
 
-Execute [src/examples/usage_1.py](src/examples/usage_1.py)  for a few iterations and exit by pressing ctrl-c:
+Execute [src/examples/usage_1.py](https://github.com/bvett/adaptive-timer/blob/main/src/examples/usage_1.py)  for a few iterations and exit by pressing ctrl-c:
 
 ```shell
 [adaptive-timer]$ python src/examples/usage_1.py 
@@ -329,7 +329,7 @@ In the previous examples, AdaptiveTimer has been allowed to run indefinitely unt
 
 **Note:** : It is up to the application to ensure other coroutines/tasks are cancelled after *stop()* is executed.  Otherwise, those routines will become deadlocked awaiting *timer.value()*
 
-[usage_2.py](src/examples/usage_2.py) modifies *consume_values()* to exit and stop *timer* after 10 iterations:
+[usage_2.py](https://github.com/bvett/adaptive-timer/blob/main/src/examples/usage_2.py) modifies *consume_values()* to exit and stop *timer* after 10 iterations:
 
 
 ```python
@@ -363,7 +363,7 @@ try:
 
 ```
 
-Executing [src/examples/usage_2.py](src/examples/usage_2.py) shows the result of these changes:
+Executing [src/examples/usage_2.py](https://github.com/bvett/adaptive-timer/blob/main/src/examples/usage_2.py) shows the result of these changes:
 
 ```shell
 [adaptive-timer]$ python src/examples/usage_2.py 
@@ -385,7 +385,7 @@ Goodbye!
 
 There may be times when an application needs to change the target interval after *timer.start()* is called, for example in response to user input.  This is accomplished by setting the *interval* property of an AdaptiveTimer.
 
-Executing [src/examples/usage_3.py](src/examples/usage_3.py) demonstrates this by reducing the interval from 1s to 0.5s after 5 iterations:
+Executing [src/examples/usage_3.py](https://github.com/bvett/adaptive-timer/blob/main/src/examples/usage_3.py) demonstrates this by reducing the interval from 1s to 0.5s after 5 iterations:
 
 ```python
 async def consume_values():
@@ -425,7 +425,7 @@ Goodbye!
 ### Variance Limit
 This example demonstrates how to configure AdaptiveTimer to raise an exception when the [variance](#concepts) exceeds a designated maximum.  By default, the variance is unbounded.
 
-First step is to modify *consume_values()* in [usage_4.py](src/examples/usage_4.py) to print the variance, and to introduce an additional delay on the 7th iteration:
+First step is to modify *consume_values()* in [usage_4.py](https://github.com/bvett/adaptive-timer/blob/main/src/examples/usage_4.py) to print the variance, and to introduce an additional delay on the 7th iteration:
 
 ```python
 async def consume_values():
@@ -459,7 +459,7 @@ This introduces *AdaptiveTimer.state()* which is useful for getting the internal
 
 The delay is being introduced in a contrived manner here for simplicity.  In practice, unexpected delays can happen due for many reasons, such as I/O delays or exceptions in other coroutines.
 
-Executing [src/examples/usage_4.py](src/examples/usage_4.py) shows an approximately 51% variance between intervals 7 and 8:
+Executing [src/examples/usage_4.py](https://github.com/bvett/adaptive-timer/blob/main/src/examples/usage_4.py) shows an approximately 51% variance between intervals 7 and 8:
 
 ```shell
 [adaptive-timer]$ python src/examples/usage_4.py 
@@ -486,7 +486,7 @@ Modifying the initialization of *timer* as shown below will result in an excepti
 timer = AdaptiveTimer(1, max_variance=0.25)
 ```
 
-[src/examples/usage_5.py](src/examples/usage_5.py) contains this minor modification, and running it results in a ValueError exception being thrown:
+[src/examples/usage_5.py](https://github.com/bvett/adaptive-timer/blob/main/src/examples/usage_5.py) contains this minor modification, and running it results in a ValueError exception being thrown:
 
 ```shell
 [adaptive-timer]$ python src/examples/usage_5.py 
@@ -516,7 +516,7 @@ This is useful for dealing with intermittent hardware failures that prevent valu
 By default, any exceptions raised while calling the *get_value* parameter of *timer.start()* are propagated up threough AdaptiveTimer, essentially treating any exception as fatal.  
 
 
-[usage_6.py](src/examples/usage_6.py) demonstrates this by modifying an earlier example to raise an exception on the 5th iteration, and have it handled (swallowed) by providing a custom exception handler to *timer.start()*:
+[usage_6.py](https://github.com/bvett/adaptive-timer/blob/main/src/examples/usage_6.py) demonstrates this by modifying an earlier example to raise an exception on the 5th iteration, and have it handled (swallowed) by providing a custom exception handler to *timer.start()*:
 
 ```python
 
@@ -538,7 +538,7 @@ async def produce_value_every_second():
 
 ```
 
-Executing [src/examples/usage_6.py](src/examples/usage_6.py) demonstrates this:
+Executing [src/examples/usage_6.py](https://github.com/bvett/adaptive-timer/blob/main/src/examples/usage_6.py) demonstrates this:
 
 ```shell
 [adaptive-timer]$ python src/examples/usage_6.py 
@@ -563,7 +563,7 @@ Goodbye!
 def state(self) -> dict[str, int | float | None]:
 ```
 
-The *state()* instance method of an AdaptiveTimer returns a dictionary containing its internal state.  This is useful for testing and visualiztion, as demonstrated in [usage_5.py](src/examples/usage_5.py) and [simulator.py](src/examples/simulator.py) (introduced in a following section) 
+The *state()* instance method of an AdaptiveTimer returns a dictionary containing its internal state.  This is useful for testing and visualiztion, as demonstrated in [usage_5.py](https://github.com/bvett/adaptive-timer/blob/main/src/examples/usage_5.py) and [simulator.py](https://github.com/bvett/adaptive-timer/blob/main/src/examples/simulator.py) (introduced in a following section) 
 
 
 The following properties are returned:
@@ -577,10 +577,10 @@ The following properties are returned:
 
 
 ## Simulation
-[simulator.py](src/examples/simulator.py) executes an AdaptiveTimer at a designated *target_interval* and with a simulated workload.  It then plots the resulting *actual_interval* and *variance* to show how well the AdaptiveTimer is able to maintain the target_interval.
+[simulator.py](https://github.com/bvett/adaptive-timer/blob/main/src/examples/simulator.py) executes an AdaptiveTimer at a designated *target_interval* and with a simulated workload.  It then plots the resulting *actual_interval* and *variance* to show how well the AdaptiveTimer is able to maintain the target_interval.
 ### Configuration
 
-Before running any of the following ([scenarios](#sample-scenarios)), edit the *Scenario* class in [simulator.py](src/examples/simulator.py).  Jump ahead to [Sample Scenarios](#sample-scenarios) below to execute simulations.
+Before running any of the following ([scenarios](#sample-scenarios)), edit the *Scenario* class in [simulator.py](https://github.com/bvett/adaptive-timer/blob/main/src/examples/simulator.py).  Jump ahead to [Sample Scenarios](#sample-scenarios) below to execute simulations.
 
 ```python
 class Scenario:
@@ -611,13 +611,13 @@ class Scenario:
   * <ins>overload</ins>: Red shading appears on the plots when *offset* == -*target*, meaning that AdaptiveTimer cannot shorten the interval any further.  Further increases in workload will result in a proportionate increase in the actual interval.
 
 ### Sample Scenarios
-To execute one of these scenarios, first modify the *Scenario* class as indicated then execute [simulator.py](src/examples/simulator.py).  Close the window to exit.
+To execute one of these scenarios, first modify the *Scenario* class as indicated then execute [simulator.py](https://github.com/bvett/adaptive-timer/blob/main/src/examples/simulator.py).  Close the window to exit.
 
 #### Constant Load
 
 Executes with a fixed load of 30% of *target_interval*:
 
-In [simulator.py](src/examples/simulator.py):
+In [simulator.py](https://github.com/bvett/adaptive-timer/blob/main/src/examples/simulator.py):
 ```python
 
 class SCENARIO:
@@ -628,7 +628,7 @@ class SCENARIO:
     workload = lambda: Workload.constant(SCENARIO.target_interval * 0.30)
 ```
 
-![simulator_1.png](doc/simulator_1.png)
+![simulator_1.png](https://github.com/bvett/adaptive-timer/blob/main/doc/simulator_1.png?raw=true)
 
 With a load of 0.075s, AdaptiveTimer corrects the initial variance by maintaining an offset of -0.077s.  The additional 0.002s is compensating for other processing, such as the overhead of the Matplotlib graphing library.
 
@@ -636,7 +636,7 @@ With a load of 0.075s, AdaptiveTimer corrects the initial variance by maintainin
 
 This demonstrates how AdaptiveTimer is able to maintain the target interval when presented with a oscillating workload.  As with the previous example, the peak workload is limited to 30% of the target, and the actual interval remains closely aligned to the target interval.
 
-In [simulator.py](src/examples/simulator.py):
+In [simulator.py](https://github.com/bvett/adaptive-timer/blob/main/src/examples/simulator.py):
 ```python
 class SCENARIO:
     """Collection of configuration attributes"""
@@ -647,7 +647,7 @@ class SCENARIO:
 
 ```
 
-![simulator_2.png](doc/simulator_2.png)
+![simulator_2.png](https://github.com/bvett/adaptive-timer/blob/main/doc/simulator_2.png?raw=true)
 
 
 
@@ -657,7 +657,7 @@ Notice how the maximum deflection of the variance occurs when the workload delta
 
 Similar to the previous example, but with a higher maximum workload of 75% of the target to demonstrate what happens when the timer is not able to further compensate for a high variance.
 
-In [simulator.py](src/examples/simulator.py):
+In [simulator.py](https://github.com/bvett/adaptive-timer/blob/main/src/examples/simulator.py):
 ```python
 class SCENARIO:
     """Collection of configuration attributes"""
@@ -667,7 +667,7 @@ class SCENARIO:
     workload = lambda: Workload.oscillate(50, SCENARIO.target_interval * 0.75)
 
 ```
-![simulator_3.png](doc/simulator_3.png)
+![simulator_3.png](https://github.com/bvett/adaptive-timer/blob/main/doc/simulator_3.png?raw=true)
 
 The shaded areas indicate where the offset has reached -target_interval, and therefore AdaptiveTimer cannot shorten the interval further.
 
@@ -675,7 +675,7 @@ The shaded areas indicate where the offset has reached -target_interval, and the
 
 Sets an upper limit on the variance to force an exception:
 
-In [simulator.py](src/examples/simulator.py):
+In [simulator.py](https://github.com/bvett/adaptive-timer/blob/main/src/examples/simulator.py):
 ```python
 class SCENARIO:
     """Collection of configuration attributes"""
@@ -686,7 +686,7 @@ class SCENARIO:
 ```
 Increasing the workload and setting a maximum variance of 20% raises the exception as expected, indicating that the AdaptiveTimer failed to maintain an interval within *max_variance*:
 
-![simulator_4.png](doc/simulator_4.png)
+![simulator_4.png](https://github.com/bvett/adaptive-timer/blob/main/doc/simulator_4.png?raw=true)
 
 Press enter/return in the terminal to exit the application:
 
@@ -699,7 +699,7 @@ Press the Enter/Return key to exit.
 #### Random Chaos
 This scenario is more for fun and/or making improvements:
 
-In [simulator.py](src/examples/simulator.py):
+In [simulator.py](https://github.com/bvett/adaptive-timer/blob/main/src/examples/simulator.py):
 ```python
 class SCENARIO:
     """Collection of configuration attributes"""
@@ -711,7 +711,7 @@ class SCENARIO:
 
 This generates random workloads that vary +/- 30% from 0.175 (70% of the target interval)
 
-![simulator_5.png](doc/simulator_5.png)
+![simulator_5.png](https://github.com/bvett/adaptive-timer/blob/main/doc/simulator_5.png?raw=true)
 
 Such an unpredictable environment makes it a challenge to maintain a steady interval, however this is where setting *max_variance* can be helpful to throw an exception in the event that the enviroment unexpectently become chaotic or overwhelmed.
 
