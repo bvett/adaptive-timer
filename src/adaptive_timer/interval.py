@@ -1,6 +1,6 @@
 import logging
 import asyncio
-from utime import ticks_diff, ticks_ms
+from utime import ticks_diff, ticks_us
 
 # pylint: disable=missing-function-docstring
 
@@ -77,13 +77,13 @@ class Interval:
 
     def cycle(self) -> None:
         """Begins new interval after calculating duraction of previous interval"""
-        now = ticks_ms()
+        now = ticks_us()
 
         if self._begin_timestamp is not None:
 
             td = ticks_diff(now, self._begin_timestamp)
 
-            self._set_actual(td / 1000)
+            self._set_actual(td / 1_000_000)
 
         self._begin_timestamp = now
 

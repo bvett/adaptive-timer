@@ -121,7 +121,7 @@ class TestAdaptiveTimer(unittest.IsolatedAsyncioTestCase):
             sensor_mock = self.SensorMock()
 
         timer = AdaptiveTimer(target_interval, max_variance=max_variance)
-        self.ticks_diff_mock.side_effect = [i[0] * 1000 for i in iterations]
+        self.ticks_diff_mock.side_effect = [i[0] * 1_000_000 for i in iterations]
 
         # is an exception expected?
 
