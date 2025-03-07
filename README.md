@@ -580,6 +580,14 @@ The following properties are returned:
 [simulator.py](https://github.com/bvett/adaptive-timer/blob/main/src/examples/simulator.py) executes an AdaptiveTimer at a designated *target_interval* and with a simulated workload.  It then plots the resulting *actual_interval* and *variance* to show how well the AdaptiveTimer is able to maintain the target_interval.
 ### Configuration
 
+#### Install Dependencies
+In addition to adaptive-timer, install NumPy and Matplotlib.
+
+```shell
+(.venv) $ pip install adaptive-timer numpy matplotlib
+```
+#### Configure Scenario
+
 Before running any of the following ([scenarios](#sample-scenarios)), edit the *Scenario* class in [simulator.py](https://github.com/bvett/adaptive-timer/blob/main/src/examples/simulator.py).  Jump ahead to [Sample Scenarios](#sample-scenarios) below to execute simulations.
 
 ```python
