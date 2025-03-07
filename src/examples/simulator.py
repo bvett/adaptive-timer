@@ -4,16 +4,13 @@
 import asyncio
 import math
 import random
-import sys
 import time
 import traceback
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import ticker
 
-
-sys.path.append("src")
-from adaptive_timer import AdaptiveTimer  # pylint: disable=wrong-import-position
+from adaptive_timer import AdaptiveTimer
 
 np.random.seed()
 plt.ion()

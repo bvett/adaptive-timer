@@ -5,9 +5,6 @@ import random
 from time import sleep
 import traceback
 
-import sys
-
-sys.path.append("src")
 from adaptive_timer import AdaptiveTimer
 
 random.seed()

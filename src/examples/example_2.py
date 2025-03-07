@@ -1,4 +1,4 @@
-"""Demonstration of AdaptiveTimer for maintaining steady loop intervals in the presence 
+"""Demonstration of AdaptiveTimer for maintaining steady loop intervals in the presence
 of a noisy neighbor"""
 
 import asyncio
@@ -7,9 +7,6 @@ from statistics import mean, pvariance
 import traceback
 from time import sleep, time
 
-import sys
-
-sys.path.append("src")
 from adaptive_timer import AdaptiveTimer
 
 random.seed()
