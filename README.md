@@ -23,7 +23,7 @@
     - [Random Chaos](#random-chaos)
 
 ## Introduction
-AdaptiveTimer executes a workload at a designated interval while minimizing variance.  It is designed for use in single-threaded applications using coopertive multitasking, such as those running on microcontrollers with [MicroPython](https://micropython.org/).
+AdaptiveTimer executes a workload at a designated interval while minimizing variance.  It is designed for use in single-threaded applications using cooperative multitasking, such as those running on microcontrollers with [MicroPython](https://micropython.org/).
 
 For example, the following code intends to execute *do_something()* once every second:
 
@@ -325,7 +325,7 @@ Value: 39
 ```
 
 ### Start / Stop
-In the previous examples, AdaptiveTimer has been allowed to run indefinitely until interrupted by the user.   To programmaticelly stop AdaptiveTimer, use its *stop()* instance method.
+In the previous examples, AdaptiveTimer has been allowed to run indefinitely until interrupted by the user.   To programmatically stop AdaptiveTimer, use its *stop()* instance method.
 
 **Note:** : It is up to the application to ensure other coroutines/tasks are cancelled after *stop()* is executed.  Otherwise, those routines will become deadlocked awaiting *timer.value()*
 
@@ -513,7 +513,7 @@ To enable better exception handling, *start()* supports a second callback, *exce
 
 This is useful for dealing with intermittent hardware failures that prevent value-capture.
 
-By default, any exceptions raised while calling the *get_value* parameter of *timer.start()* are propagated up threough AdaptiveTimer, essentially treating any exception as fatal.  
+By default, any exceptions raised while calling the *get_value* parameter of *timer.start()* are propagated up through AdaptiveTimer, essentially treating any exception as fatal.  
 
 
 [usage_6.py](https://github.com/bvett/adaptive-timer/blob/main/src/examples/usage_6.py) demonstrates this by modifying an earlier example to raise an exception on the 5th iteration, and have it handled (swallowed) by providing a custom exception handler to *timer.start()*:
@@ -563,12 +563,12 @@ Goodbye!
 def state(self) -> dict[str, int | float | None]:
 ```
 
-The *state()* instance method of an AdaptiveTimer returns a dictionary containing its internal state.  This is useful for testing and visualiztion, as demonstrated in [usage_5.py](https://github.com/bvett/adaptive-timer/blob/main/src/examples/usage_5.py) and [simulator.py](https://github.com/bvett/adaptive-timer/blob/main/src/examples/simulator.py) (introduced in a following section) 
+The *state()* instance method of an AdaptiveTimer returns a dictionary containing its internal state.  This is useful for testing and visualization, as demonstrated in [usage_5.py](https://github.com/bvett/adaptive-timer/blob/main/src/examples/usage_5.py) and [simulator.py](https://github.com/bvett/adaptive-timer/blob/main/src/examples/simulator.py) (introduced in a following section) 
 
 
 The following properties are returned:
 
-  - **actualInterval**: Duration (in seconds) of the most recent measured interval. 'None' for the initial iteration or when previous iteration was inavalidated
+  - **actualInterval**: Duration (in seconds) of the most recent measured interval. 'None' for the initial iteration or when previous iteration was invalidated
   - **actualIntervalDelta**: Most recent change in actualInterval.
   - **maxVariance**: 'None' or the maximum variance allowed by the timer
   - **variance**: Percentage difference between the actual and target intervals.
@@ -611,10 +611,10 @@ class Scenario:
 
 ### Interpreting the Plots
   * <ins>target</ins>: target interval.  Specified by Scenario.target_interval.
-  * <ins>synthetic load</ins>: Amount of artifical delay injected into an interval
+  * <ins>synthetic load</ins>: Amount of artificial delay injected into an interval
   * <ins>actual</ins>: Actual duration of the interval.  AdaptiveTimer attempts to keep this close to *target*
   * <ins>variance</ins>: Percentage difference between actual and target.
-  * <ins>offset</ins>: Typicaly moves opposite of *synthetic load*.  AdaptiveTimer sleeps for (*target_interval* + *offset*) seconds in between each interval, and will decrease *offset* to compensate for variance increases.
+  * <ins>offset</ins>: Typically moves opposite of *synthetic load*.  AdaptiveTimer sleeps for (*target_interval* + *offset*) seconds in between each interval, and will decrease *offset* to compensate for variance increases.
   * <ins>max</ins>: If specified, indicates the maximum limits for *variance*
   * <ins>overload</ins>: Red shading appears on the plots when *offset* == -*target*, meaning that AdaptiveTimer cannot shorten the interval any further.  Further increases in workload will result in a proportionate increase in the actual interval.
 
@@ -721,8 +721,4 @@ This generates random workloads that vary +/- 30% from 0.175 (70% of the target 
 
 ![simulator_5.png](https://github.com/bvett/adaptive-timer/blob/main/doc/simulator_5.png?raw=true)
 
-Such an unpredictable environment makes it a challenge to maintain a steady interval, however this is where setting *max_variance* can be helpful to throw an exception in the event that the enviroment unexpectently become chaotic or overwhelmed.
-
-
-
-
+Such an unpredictable environment makes it a challenge to maintain a steady interval, however this is where setting *max_variance* can be helpful to throw an exception in the event that the environment unexpectedly become chaotic or overwhelmed.
