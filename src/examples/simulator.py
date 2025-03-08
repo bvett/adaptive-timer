@@ -195,7 +195,7 @@ async def consume_timer(timer: AdaptiveTimer):
 async def run_timer(timer: AdaptiveTimer):
 
     try:
-        await timer.start(SCENARIO.workload)
+        await timer.start(SCENARIO.workload)  # type: ignore
 
     except ValueError as e:
         print(e)
