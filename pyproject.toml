@@ -8,7 +8,7 @@ packages = ["src/adaptive_timer"]
 
 [project]
 name = "adaptive-timer"
-version = "0.3.10"
+version = "0.3.11"
 dependencies = [
     "pycopy-cpython-utime >= 0.5.2"
 ]
